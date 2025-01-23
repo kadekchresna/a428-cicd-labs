@@ -5,6 +5,11 @@ pipeline {
             args '-p 3000:3000'
         }
     }
+    environment {
+        EC2_USER = 'ec2-user' 
+        EC2_HOST = 'ec2-54-86-110-35.compute-1.amazonaws.com' 
+        SSH_KEY_PATH = '/aws-chresna.dev'
+    }
     stages {
         stage('Build') {
             steps {
@@ -28,10 +33,21 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh './jenkins/scripts/deliver.sh'
-                sleep 60
-                sh './jenkins/scripts/kill.sh'
+                script {
+                    sh """
+                    echo 'Testing connection to EC2 instance using SSH key...'
+                    ssh -i ${SSH_KEY_PATH} -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} echo 'Connection Successful'
+                    """
+                }
             }
         }
+
+        // stage('Deploy') {
+        //     steps {
+        //         sh './jenkins/scripts/deliver.sh'
+        //         sleep 60
+        //         sh './jenkins/scripts/kill.sh'
+        //     }
+        // }
     }
 }
