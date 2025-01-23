@@ -1,21 +1,26 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import './cube.css';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+function App() {
+  const [isRotating, setIsRotating] = useState(false);
+  
+  return (
+    <div className="scene">
+      <div 
+        className={`cube ${isRotating ? 'rotate' : ''}`}
+        onClick={() => setIsRotating(!isRotating)}
+      >
+        <div className="cube-face front">Front</div>
+        <div className="cube-face back">Back</div>
+        <div className="cube-face right">Right</div>
+        <div className="cube-face left">Left</div>
+        <div className="cube-face top">Top</div>
+        <div className="cube-face bottom">Bottom</div>
       </div>
+    </div>
     );
   }
-}
 
 export default App;
