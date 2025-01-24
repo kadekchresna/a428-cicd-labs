@@ -35,14 +35,15 @@ pipeline {
             agent { label 'build-in' } 
             steps {
                 script {
-                    echo "Running on node: ${env.NODE_NAME}"
                     sh '''
-                    if command -v ssh > /dev/null 2>&1; then
-                        echo "SSH is installed and available."
-                    else
-                        echo "SSH is not installed!"
-                        exit 1
-                    fi
+                    echo "Checking environment..."
+                    env
+                    echo "Checking shell..."
+                    command -v bash || command -v sh || echo "Shell is missing!"
+                    echo "Checking SSH..."
+                    command -v ssh || echo "SSH is missing!"
+                    echo "Listing workspace directory..."
+                    ls -la /var/jenkins_home/workspace
                     '''
                     // sh """
                     // echo 'Testing connection to EC2 instance using SSH key...'
