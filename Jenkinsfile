@@ -9,7 +9,7 @@ pipeline {
         EC2_USER = 'ec2-user' 
         EC2_HOST = 'ec2-3-95-180-17.compute-1.amazonaws.com' 
         APP_DIR = '/var/www/react-app'
-        SSH_KEY_ID = 'aws.chresna.dev'
+        SSH_KEY_ID = 'ssh-aws-chresna.dev'
     }
     stages {
         stage('Build') {
