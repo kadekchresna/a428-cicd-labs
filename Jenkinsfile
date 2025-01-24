@@ -37,7 +37,7 @@ pipeline {
                 sshagent(credentials: [SSH_KEY_ID]) {
                     sh """
                     cd /var/jenkins_home/workspace/react-app
-                    tar -czf build.tar.gz build
+                    tar -czf build.tar.gz -C build .
                     scp -o StrictHostKeyChecking=no build.tar.gz ${EC2_USER}@${EC2_HOST}:${APP_DIR}
                     ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} "cd ${APP_DIR} && tar -xzf build.tar.gz && rm -f build.tar.gz"
                     """
