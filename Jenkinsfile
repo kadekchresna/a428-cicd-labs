@@ -39,11 +39,7 @@ pipeline {
                     cd /var/jenkins_home/workspace/react-app
                     tar -czf build.tar.gz build
                     scp -o StrictHostKeyChecking=no build.tar.gz ${EC2_USER}@${EC2_HOST}:${APP_DIR}
-                    ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} << 'EOF'
-                        cd ${APP_DIR}
-                        tar -xzf build.tar.gz
-                        rm -f build.tar.gz
-                    EOF
+                    ssh -o UserKnownHostsFile=known_hosts ${EC2_USER}@${EC2_HOST} "cd ${APP_DIR} && tar -xzf build.tar.gz && rm -f build.tar.gz"
                     """
                 }
                 // script {
