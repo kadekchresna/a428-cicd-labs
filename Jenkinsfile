@@ -36,6 +36,7 @@ pipeline {
             steps {
                 sshagent(credentials: [SSH_KEY_ID]) {
                     sh """
+                    ssh-keyscan -H ${EC2_HOST} >> ~/.ssh/known_hosts
                     tar -czf build.tar.gz /var/jenkins_home/workspace/react-app/build
                     scp build.tar.gz ${EC2_USER}@${EC2_HOST}:${APP_DIR}
                     ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} << EOF
