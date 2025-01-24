@@ -38,7 +38,7 @@ pipeline {
                     sh """
                     tar -czf build.tar.gz /var/jenkins_home/workspace/react-app/build
                     scp build.tar.gz ${EC2_USER}@${EC2_HOST}:${APP_DIR}
-                    ssh ${EC2_USER}@${EC2_HOST} << EOF
+                    ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} << EOF
                         cd ${APP_DIR}
                         tar -xzf build.tar.gz
                         rm -f build.tar.gz
