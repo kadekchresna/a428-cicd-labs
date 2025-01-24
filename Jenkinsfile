@@ -2,13 +2,14 @@ pipeline {
     agent {
         docker {
             image 'node:16-buster'
-            args '-p 3000:3000 -v /aws-chresna.dev:/aws-chresna.dev:ro'
+            args '-p 3000:3000'
         }
     }
     environment {
         EC2_USER = 'ec2-user' 
         EC2_HOST = 'ec2-3-95-180-17.compute-1.amazonaws.com' 
-        SSH_KEY_PATH = '/aws-chresna.dev'
+        APP_DIR = '/var/www/react-app'
+        SSH_KEY_ID = 'aws.chresna.dev'
     }
     stages {
         stage('Build') {
@@ -34,21 +35,28 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    // sh '''
-                    // echo "Checking environment..."
-                    // env
-                    // echo "Checking shell..."
-                    // command -v bash || command -v sh || echo "Shell is missing!"
-                    // echo "Checking SSH..."
-                    // command -v ssh || echo "SSH is missing!"
-                    // echo "Listing workspace directory..."
-                    // ls -la /var/jenkins_home/workspace
-                    // '''
-                    sh """
-                    cat ${SSH_KEY_PATH}
-                    echo 'Testing connection to EC2 instance using SSH key...'
-                    ssh -i ${SSH_KEY_PATH} -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} echo 'Connection Successful'
-                    """
+                    // sh """
+                    // echo 'Testing connection to EC2 instance using SSH key...'
+                    // tar -czf build.tar.gz /var/jenkins_home/workspace/react-app
+                    // scp build.tar.gz ${EC2_USER}@${EC2_HOST}:${APP_DIR}
+                    // ssh -i ${SSH_KEY_PATH} -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} << EOF
+                    //     cd ${APP_DIR}
+                    //     tar -xzf build.tar.gz
+                    //     rm -f build.tar.gz
+                    //     # Restart web server or services if needed
+                    // EOF
+                    // """
+                    sshagent(credentials: [SSH_KEY_ID]) {
+                        sh """
+                        tar -czf build.tar.gz /var/jenkins_home/workspace/react-app/build
+                        scp build.tar.gz ${EC2_USER}@${EC2_HOST}:${APP_DIR}
+                        ssh ${EC2_USER}@${EC2_HOST} << EOF
+                            cd ${APP_DIR}
+                            tar -xzf build.tar.gz
+                            rm -f build.tar.gz
+                        EOF
+                        """
+                    }
                 }
             }
         }
