@@ -34,7 +34,18 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                script {
+                sshagent(credentials: [SSH_KEY_ID]) {
+                    sh """
+                    tar -czf build.tar.gz /var/jenkins_home/workspace/react-app/build
+                    scp build.tar.gz ${EC2_USER}@${EC2_HOST}:${APP_DIR}
+                    ssh ${EC2_USER}@${EC2_HOST} << EOF
+                        cd ${APP_DIR}
+                        tar -xzf build.tar.gz
+                        rm -f build.tar.gz
+                    EOF
+                    """
+                }
+                // script {
                     // sh """
                     // echo 'Testing connection to EC2 instance using SSH key...'
                     // tar -czf build.tar.gz /var/jenkins_home/workspace/react-app
@@ -46,18 +57,7 @@ pipeline {
                     //     # Restart web server or services if needed
                     // EOF
                     // """
-                    sshagent(credentials: [SSH_KEY_ID]) {
-                        sh """
-                        tar -czf build.tar.gz /var/jenkins_home/workspace/react-app/build
-                        scp build.tar.gz ${EC2_USER}@${EC2_HOST}:${APP_DIR}
-                        ssh ${EC2_USER}@${EC2_HOST} << EOF
-                            cd ${APP_DIR}
-                            tar -xzf build.tar.gz
-                            rm -f build.tar.gz
-                        EOF
-                        """
-                    }
-                }
+                // }
             }
         }
 
