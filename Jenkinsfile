@@ -37,7 +37,7 @@ pipeline {
                 script {
                     sh """
                     echo 'Testing connection to EC2 instance using SSH key...'
-                    ssh -i ${SSH_KEY_PATH} -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} echo 'Connection Successful'
+                    ssh -i ${SSH_KEY_PATH} ${EC2_USER}@${EC2_HOST} echo 'Connection Successful'
                     """
                 }
             }
