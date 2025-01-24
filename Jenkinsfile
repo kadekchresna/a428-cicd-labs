@@ -15,7 +15,7 @@ pipeline {
             steps {
                 sh 'pwd'
                 sh 'ls -la'
-                sh '[ -d "node_modules" ] && rm -r node_modules || echo "node_modules does not exist"'
+                // sh '[ -d "node_modules" ] && rm -r node_modules || echo "node_modules does not exist"'
                 sh 'npm install'
             }
         }
