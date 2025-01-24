@@ -32,7 +32,7 @@ pipeline {
         }
 
         stage('Deploy') {
-            agent { label 'built-in' } 
+            agent { label 'build-in' } 
             steps {
                 script {
                     sh """
