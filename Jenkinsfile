@@ -7,7 +7,7 @@ pipeline {
     }
     environment {
         EC2_USER = 'ec2-user' 
-        EC2_HOST = 'ec2-54-86-110-35.compute-1.amazonaws.com' 
+        EC2_HOST = 'ec2-3-95-180-17.compute-1.amazonaws.com' 
         SSH_KEY_PATH = '/aws-chresna.dev'
     }
     stages {
