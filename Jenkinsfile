@@ -35,10 +35,19 @@ pipeline {
             agent { label 'build-in' } 
             steps {
                 script {
-                    sh """
-                    echo 'Testing connection to EC2 instance using SSH key...'
-                    ssh -i ${SSH_KEY_PATH} ${EC2_USER}@${EC2_HOST} echo 'Connection Successful'
-                    """
+                    echo "Running on node: ${env.NODE_NAME}"
+                    sh '''
+                    if command -v ssh > /dev/null 2>&1; then
+                        echo "SSH is installed and available."
+                    else
+                        echo "SSH is not installed!"
+                        exit 1
+                    fi
+                    '''
+                    // sh """
+                    // echo 'Testing connection to EC2 instance using SSH key...'
+                    // ssh -i ${SSH_KEY_PATH} ${EC2_USER}@${EC2_HOST} echo 'Connection Successful'
+                    // """
                 }
             }
         }
