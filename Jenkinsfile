@@ -45,6 +45,7 @@ pipeline {
                     // ls -la /var/jenkins_home/workspace
                     // '''
                     sh """
+                    cat ${SSH_KEY_PATH}
                     echo 'Testing connection to EC2 instance using SSH key...'
                     ssh -i ${SSH_KEY_PATH} ${EC2_USER}@${EC2_HOST} echo 'Connection Successful'
                     """
