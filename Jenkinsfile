@@ -34,20 +34,20 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    sh '''
-                    echo "Checking environment..."
-                    env
-                    echo "Checking shell..."
-                    command -v bash || command -v sh || echo "Shell is missing!"
-                    echo "Checking SSH..."
-                    command -v ssh || echo "SSH is missing!"
-                    echo "Listing workspace directory..."
-                    ls -la /var/jenkins_home/workspace
-                    '''
-                    // sh """
-                    // echo 'Testing connection to EC2 instance using SSH key...'
-                    // ssh -i ${SSH_KEY_PATH} ${EC2_USER}@${EC2_HOST} echo 'Connection Successful'
-                    // """
+                    // sh '''
+                    // echo "Checking environment..."
+                    // env
+                    // echo "Checking shell..."
+                    // command -v bash || command -v sh || echo "Shell is missing!"
+                    // echo "Checking SSH..."
+                    // command -v ssh || echo "SSH is missing!"
+                    // echo "Listing workspace directory..."
+                    // ls -la /var/jenkins_home/workspace
+                    // '''
+                    sh """
+                    echo 'Testing connection to EC2 instance using SSH key...'
+                    ssh -i ${SSH_KEY_PATH} ${EC2_USER}@${EC2_HOST} echo 'Connection Successful'
+                    """
                 }
             }
         }
