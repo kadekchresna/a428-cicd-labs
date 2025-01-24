@@ -42,28 +42,7 @@ pipeline {
                     ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} "cd ${APP_DIR} && tar -xzf build.tar.gz && rm -f build.tar.gz"
                     """
                 }
-                // script {
-                    // sh """
-                    // echo 'Testing connection to EC2 instance using SSH key...'
-                    // tar -czf build.tar.gz /var/jenkins_home/workspace/react-app
-                    // scp build.tar.gz ${EC2_USER}@${EC2_HOST}:${APP_DIR}
-                    // ssh -i ${SSH_KEY_PATH} -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} << EOF
-                    //     cd ${APP_DIR}
-                    //     tar -xzf build.tar.gz
-                    //     rm -f build.tar.gz
-                    //     # Restart web server or services if needed
-                    // EOF
-                    // """
-                // }
             }
         }
-
-        // stage('Deploy') {
-        //     steps {
-        //         sh './jenkins/scripts/deliver.sh'
-        //         sleep 60
-        //         sh './jenkins/scripts/kill.sh'
-        //     }
-        // }
     }
 }
