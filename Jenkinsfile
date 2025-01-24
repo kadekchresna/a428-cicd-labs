@@ -2,8 +2,7 @@ pipeline {
     agent {
         docker {
             image 'node:16-buster'
-            args '-p 3000:3000'
-            args '-v /aws-chresna.dev:/aws-chresna.dev:ro'
+            args '-p 3000:3000 -v /aws-chresna.dev:/aws-chresna.dev:ro'
         }
     }
     environment {
