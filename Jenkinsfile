@@ -46,8 +46,7 @@ pipeline {
                 sleep(60)
                 sshagent(credentials: [SSH_KEY_ID]) {
                     sh """
-                    ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} "cd /etc/nginx/conf.d && sudo mv react-app.conf react-app.conf.ommitted"
-                    sudo systemctl reload nginx
+                    ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} "cd /etc/nginx/conf.d && sudo mv react-app.conf react-app.conf.ommitted && sudo systemctl reload nginx"
                     """
                 }
             }
