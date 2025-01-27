@@ -39,14 +39,14 @@ pipeline {
                     cd /var/jenkins_home/workspace/react-app
                     tar -czf build.tar.gz -C build .
                     scp -o StrictHostKeyChecking=no build.tar.gz ${EC2_USER}@${EC2_HOST}:${APP_DIR}
-                    ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} "cd ${APP_DIR} && tar -xzf build.tar.gz && rm -f build.tar.gz"
+                    ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} "cd ${APP_DIR} && tar -xzf build.tar.gz && rm -f build.tar.gz && cd /etc/nginx/conf.d && sudo mv react-app.conf.ommitted react-app.conf && sudo systemctl reload nginx"
                     echo 'Visit http://${EC2_HOST} to see the React application in action.'
                     """
                 }
                 sleep(60)
                 sshagent(credentials: [SSH_KEY_ID]) {
                     sh """
-                    ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} "cd /etc/nginx/conf.d && sudo mv react-app.conf react-app.conf.ommitted "
+                    ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} "cd /etc/nginx/conf.d && sudo mv react-app.conf react-app.conf.ommitted"
                     sudo systemctl reload nginx
                     """
                 }
